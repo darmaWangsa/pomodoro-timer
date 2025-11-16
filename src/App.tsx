@@ -5,13 +5,25 @@ const DEFAULT_WORK_MINUTES = 25;
 const DEFAULT_BREAK_MINUTES = 5;
 
 export default function App() {
-  const [taskName, setTaskName] = useState("");
+  // Load initial state from localStorage or defaults
+  const storedTaskName = localStorage.getItem("taskName") || "";
+  const storedWorkMinutes =
+    parseInt(localStorage.getItem("workMinutes") || "") || DEFAULT_WORK_MINUTES;
+  const storedBreakMinutes =
+    parseInt(localStorage.getItem("breakMinutes") || "") ||
+    DEFAULT_BREAK_MINUTES;
+  const storedMinutes =
+    parseInt(localStorage.getItem("minutes") || "") || storedWorkMinutes;
+  const storedSeconds = parseInt(localStorage.getItem("seconds") || "") || 0;
+  const storedIsBreakTime = localStorage.getItem("isBreakTime") === "true";
+
+  const [taskName, setTaskName] = useState(storedTaskName);
   const [isRunning, setIsRunning] = useState(false);
-  const [isBreakTime, setIsBreakTime] = useState(false);
-  const [minutes, setMinutes] = useState(DEFAULT_WORK_MINUTES);
-  const [seconds, setSeconds] = useState(0);
-  const [workMinutes, setWorkMinutes] = useState(DEFAULT_WORK_MINUTES);
-  const [breakMinutes, setBreakMinutes] = useState(DEFAULT_BREAK_MINUTES);
+  const [isBreakTime, setIsBreakTime] = useState(storedIsBreakTime);
+  const [minutes, setMinutes] = useState(storedMinutes);
+  const [seconds, setSeconds] = useState(storedSeconds);
+  const [workMinutes, setWorkMinutes] = useState(storedWorkMinutes);
+  const [breakMinutes, setBreakMinutes] = useState(storedBreakMinutes);
   const [quote, setQuote] = useState("Stay focused and keep working!");
 
   const timerRef = useRef<number | null>(null);
@@ -21,10 +33,32 @@ export default function App() {
     setQuote(randomQuote);
   };
 
+  // Save state to localStorage whenever relevant state changes
   useEffect(() => {
-    fetchQuote();
-  }, []);
+    localStorage.setItem("taskName", taskName);
+  }, [taskName]);
 
+  useEffect(() => {
+    localStorage.setItem("workMinutes", workMinutes.toString());
+  }, [workMinutes]);
+
+  useEffect(() => {
+    localStorage.setItem("breakMinutes", breakMinutes.toString());
+  }, [breakMinutes]);
+
+  useEffect(() => {
+    localStorage.setItem("minutes", minutes.toString());
+  }, [minutes]);
+
+  useEffect(() => {
+    localStorage.setItem("seconds", seconds.toString());
+  }, [seconds]);
+
+  useEffect(() => {
+    localStorage.setItem("isBreakTime", isBreakTime.toString());
+  }, [isBreakTime]);
+
+  // Timer effect
   useEffect(() => {
     if (isRunning) {
       timerRef.current = window.setInterval(() => {
@@ -110,7 +144,9 @@ export default function App() {
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full text-center space-y-6">
         {/* Quote Section */}
         <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-inner">
-          <p className="text-lg italic text-gray-700 mb-3">{`"${quote}"`}</p>
+          <p className="text-lg italic text-gray-700 mb-3">
+            {'"' + quote + '"'}
+          </p>
           <button
             onClick={handleNewQuote}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition duration-200"

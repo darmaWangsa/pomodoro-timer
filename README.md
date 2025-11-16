@@ -12,6 +12,7 @@ A simple and stylish Pomodoro Timer built with React, TypeScript, and Tailwind C
 - Enter and display a task name
 - Motivational quotes that change with each reset
 - Responsive and clean UI styled with Tailwind CSS
+- Persistent State: The app now saves your task, timer, and duration settings to local storage, allowing you to resume where you left off even after refreshing or closing the page.
 
 ---
 

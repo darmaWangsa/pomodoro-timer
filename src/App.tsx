@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { quotes } from "./quotes";
 
 const DEFAULT_WORK_MINUTES = 25;
 const DEFAULT_BREAK_MINUTES = 5;
@@ -11,9 +12,21 @@ export default function App() {
   const [seconds, setSeconds] = useState(0);
   const [workMinutes, setWorkMinutes] = useState(DEFAULT_WORK_MINUTES);
   const [breakMinutes, setBreakMinutes] = useState(DEFAULT_BREAK_MINUTES);
+  const [quote, setQuote] = useState("Stay focused and keep working!");
 
   const timerRef = useRef<number | null>(null);
 
+  const fetchQuote = () => {
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    setQuote(randomQuote);
+  };
+
+  // Fetch initial quote on component mount
+  useEffect(() => {
+    fetchQuote();
+  }, []);
+
+  // Timer effect
   useEffect(() => {
     if (isRunning) {
       timerRef.current = window.setInterval(() => {
@@ -62,6 +75,7 @@ export default function App() {
     setIsBreakTime(false);
     setMinutes(workMinutes);
     setSeconds(0);
+    fetchQuote(); // Fetch a new quote on reset
   };
 
   const handleWorkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,11 +104,26 @@ export default function App() {
     setTaskName(e.target.value);
   };
 
+  const handleNewQuote = () => {
+    fetchQuote();
+  };
+
   const formatTime = (num: number) => String(num).padStart(2, "0");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="bg-white p-8 rounded shadow w-full max-w-md text-center">
+        {/* Quote Generator */}
+        <div className="mb-4">
+          <p className="text-lg italic text-gray-700 mb-2">"{quote}"</p>
+          <button
+            onClick={handleNewQuote}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+          >
+            New Quote
+          </button>
+        </div>
+
         {/* Task Name Input */}
         <div className="mb-4">
           <label className="block mb-1 font-medium">Task Name:</label>

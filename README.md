@@ -1,4 +1,4 @@
-# Pomodoro Timer with Task Name
+# Pomodoro Timer with Task Name and Motivational Quotes
 
 A simple and stylish Pomodoro Timer built with React, TypeScript, and Tailwind CSS. This app allows you to set work and break durations, start/pause/reset the timer, and add a task name for better focus management.
 
@@ -10,6 +10,7 @@ A simple and stylish Pomodoro Timer built with React, TypeScript, and Tailwind C
 - Start, pause, and reset the timer
 - Automatically switches between work and break sessions
 - Enter and display a task name
+- Motivational quotes that change with each reset
 - Responsive and clean UI styled with Tailwind CSS
 
 ---

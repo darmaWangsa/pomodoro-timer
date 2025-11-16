@@ -21,27 +21,22 @@ export default function App() {
     setQuote(randomQuote);
   };
 
-  // Fetch initial quote on component mount
   useEffect(() => {
     fetchQuote();
   }, []);
 
-  // Timer effect
   useEffect(() => {
     if (isRunning) {
       timerRef.current = window.setInterval(() => {
         setSeconds((prev) => {
           if (prev === 0) {
             if (minutes === 0) {
-              // Switch between work and break
               if (timerRef.current) clearInterval(timerRef.current);
               setIsBreakTime((prev) => !prev);
               if (!isBreakTime) {
-                // Starting break
                 setMinutes(breakMinutes);
                 setSeconds(0);
               } else {
-                // Returning to work
                 setMinutes(workMinutes);
                 setSeconds(0);
               }
@@ -75,7 +70,7 @@ export default function App() {
     setIsBreakTime(false);
     setMinutes(workMinutes);
     setSeconds(0);
-    fetchQuote(); // Fetch a new quote on reset
+    fetchQuote();
   };
 
   const handleWorkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,85 +106,93 @@ export default function App() {
   const formatTime = (num: number) => String(num).padStart(2, "0");
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded shadow w-full max-w-md text-center">
-        {/* Quote Generator */}
-        <div className="mb-4">
-          <p className="text-lg italic text-gray-700 mb-2">"{quote}"</p>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-6 font-sans">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full text-center space-y-6">
+        {/* Quote Section */}
+        <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 shadow-inner">
+          <p className="text-lg italic text-gray-700 mb-3">{`"${quote}"`}</p>
           <button
             onClick={handleNewQuote}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow transition duration-200"
           >
             New Quote
           </button>
         </div>
 
-        {/* Task Name Input */}
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Task Name:</label>
+        {/* Task Input */}
+        <div>
+          <label className="block mb-2 text-sm font-medium text-gray-800">
+            Task Name
+          </label>
           <input
             type="text"
             placeholder="Enter task name"
             value={taskName}
             onChange={handleTaskNameChange}
-            className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
         </div>
 
         {/* Display Task Name */}
         {taskName && (
-          <h2 className="text-xl mb-4 text-gray-700 font-semibold">
-            {taskName}
-          </h2>
+          <h2 className="text-2xl font-semibold text-gray-800">{taskName}</h2>
         )}
 
-        {/* Timer Display */}
-        <div className="text-6xl font-mono mb-4">
+        {/* Timer */}
+        <div className="flex items-center justify-center bg-gray-800 text-white rounded-full w-48 h-48 mx-auto shadow-lg font-mono text-4xl md:text-6xl">
           {formatTime(minutes)}:{formatTime(seconds)}
         </div>
-        {/* Buttons */}
-        <div className="flex justify-center space-x-4 mb-4">
+
+        {/* Controls */}
+        <div className="flex justify-center space-x-4">
           <button
             onClick={handleStartPause}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-lg font-semibold transition"
           >
             {isRunning ? "Pause" : "Start"}
           </button>
           <button
             onClick={handleReset}
-            className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg shadow-lg font-semibold transition"
           >
             Reset
           </button>
         </div>
-        {/* Work Duration */}
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">
-            Work Duration (minutes):
-          </label>
-          <input
-            type="number"
-            min={1}
-            value={workMinutes}
-            onChange={handleWorkChange}
-            className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+
+        {/* Duration Settings */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Work Duration (min)
+            </label>
+            <input
+              type="number"
+              min={1}
+              value={workMinutes}
+              onChange={handleWorkChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+          </div>
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Break Duration (min)
+            </label>
+            <input
+              type="number"
+              min={1}
+              value={breakMinutes}
+              onChange={handleBreakChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+          </div>
         </div>
-        {/* Break Duration */}
-        <div>
-          <label className="block mb-1 font-medium">
-            Break Duration (minutes):
-          </label>
-          <input
-            type="number"
-            min={1}
-            value={breakMinutes}
-            onChange={handleBreakChange}
-            className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        {/* Status */}
-        <div className="mt-4 text-lg font-semibold">
+
+        {/* Status Indicator */}
+        <div
+          className={`mt-4 text-xl font-semibold ${
+            isBreakTime ? "text-blue-500" : "text-green-500"
+          }`}
+        >
           {isBreakTime ? "Break Time!" : "Work Time!"}
         </div>
       </div>

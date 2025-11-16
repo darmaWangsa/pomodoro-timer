@@ -1,4 +1,4 @@
-// src/quotes.ts
+// Quotes array for motivational messages
 export const quotes = [
   "Don't watch the clock; do what it does. Keep going.",
   "The future depends on what you do today.",

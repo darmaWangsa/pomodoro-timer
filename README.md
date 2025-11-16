@@ -4,6 +4,12 @@ A simple and stylish Pomodoro Timer built with React, TypeScript, and Tailwind C
 
 ---
 
+## 🌐 Live Demo
+
+Try it here: https://pomodoro-timer-genie.netlify.app
+
+---
+
 ## 🚀 Features
 
 - Set custom work and break durations
@@ -44,6 +50,8 @@ npm install
 ```bash
 npm run dev
 ```
+
+---
 
 ## 📜 License
 
